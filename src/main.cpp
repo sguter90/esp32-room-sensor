@@ -7,11 +7,9 @@
 #include <PubSubClient.h>
 #include "MQTTSetup.h"
 #include "RoomSensor.h"
+#include "ConfigMyRoom.h" // copy and adjust ConfigRoom.h.dist
 
 // WIFI
-std::string wifi_ssid = "<wifi name>";
-std::string wifi_password = "<wifi password>";
-int wifiCheckInterval = 30000;
 long lastWifiCheck;
 
 // webserver
@@ -23,19 +21,11 @@ WiFiClient espClient;
 PubSubClient mqttClient(espClient);
 MQTTSetup mqtt;
 MQTTConfig cfg;
-const char mqttThingName[20] = "sensor-living-room";
-const char mqttServer[16] = "192.168.1.23";
-const int mqttPort = 1883;
-const char mqttUser[20] = "";
-const char mqttPass[20] = "";
-const char mqttTopicPrefix[60] = "LivingRoom/RoomSensor/";
 
 // BME680
 Bsec sensor;
 RoomSensor roomSensor;
 SensorData sensorData;
-float temperatureOffset = 2.5;   // °C
-int sensorReadIntervall = 30000; // ms
 
 // logging
 RemoteLogging logger = RemoteLogging(server, webSocket);

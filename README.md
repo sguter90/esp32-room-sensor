@@ -43,6 +43,7 @@ Uses the BME680 sensor to read temperature, pressure, humidity and IAQ and provi
 1. Solder BME680 pin headers
 1. [Connect ESP32 to BME680](doc/Wiring.md)
 1. [Flash ESP32](doc/Flashing.md)
+1. [Integrating into Homebridge](doc/Homebridge.md)
 
 # Acknowledgments
 Special thankts to:

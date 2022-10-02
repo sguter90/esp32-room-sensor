@@ -55,6 +55,7 @@ protected:
 class WebServerAdvanced : public WebServer::WebServer
 {
     using WebServer::WebServer;
+
 public:
     void on(const Uri &uri, HTTPMethod method, TExtendedHandlerFunction fn, WebServer::THandlerFunction ufn)
     {

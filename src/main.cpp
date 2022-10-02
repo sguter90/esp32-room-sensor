@@ -52,7 +52,7 @@ void http_handleIndex(WebServer &server, HTTPMethod requestMethod, String reques
   replace(response, "{temperature}", std::to_string(sensorData.temperature));
   replace(response, "{pressure}", std::to_string(sensorData.pressure));
   replace(response, "{humidity}", std::to_string(sensorData.humidity));
-  replace(response, "{iaq}", std::to_string(sensorData.iaq));
+  replace(response, "{iaq}", std::to_string(sensorData.iaq) + " (" + sensorData.getAirQualityState() + ")");
 
   char *cstr = new char[response.length() + 1];
   strcpy(cstr, response.c_str());
@@ -77,12 +77,14 @@ void sensorDataEvent(SensorData data)
   std::string temperatureTopic = mqtt.getTopic("temperature");
   std::string pressureTopic = mqtt.getTopic("pressure");
   std::string humidityTopic = mqtt.getTopic("humidity");
+  std::string iaqTopic = mqtt.getTopic("iaq");
   std::string qualityTopic = mqtt.getTopic("quality");
 
   mqttClient.publish(temperatureTopic.c_str(), std::to_string(data.temperature).c_str());
   mqttClient.publish(pressureTopic.c_str(), std::to_string(data.pressure).c_str());
   mqttClient.publish(humidityTopic.c_str(), std::to_string(data.humidity).c_str());
-  mqttClient.publish(qualityTopic.c_str(), std::to_string(data.iaq).c_str());
+  mqttClient.publish(iaqTopic.c_str(), std::to_string(data.iaq).c_str());
+  mqttClient.publish(qualityTopic.c_str(), data.getAirQualityState().c_str());
 }
 
 // setup and register additional serial log to remote logger

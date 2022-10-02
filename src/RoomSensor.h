@@ -31,6 +31,8 @@ public:
     uint8_t iaqAccuracy;
     uint8_t co2Accuracy;
     uint8_t breathVocAccuracy;
+
+    std::string getAirQualityState();
 };
 
 typedef std::function<void(SensorData data)> SensorDataEvent;

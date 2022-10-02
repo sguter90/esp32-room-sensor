@@ -1,5 +1,22 @@
 #include "RoomSensor.h"
 
+std::string SensorData::getAirQualityState()
+{
+    if (this->iaq <= 50) {
+        return "EXCELLENT";
+    } else if(this->iaq <= 150) {
+        return "GOOD";
+    } else if(this->iaq <= 200) {
+        return "FAIR";
+    } else if(this->iaq <= 200) {
+        return "INFERIOR";
+    } else if(this->iaq > 200) {
+        return "POOR";
+    }
+
+    return "UNKNOWN";
+}
+
 RoomSensor::RoomSensor()
 {
 }
@@ -78,7 +95,10 @@ void RoomSensor::printHumidity(SensorData data)
 void RoomSensor::printIAQ(SensorData data)
 {
     this->_output->print(F("IAQ = "));
-    this->_output->println(data.iaq);
+    this->_output->print(data.iaq);
+    this->_output->print(" (");
+    this->_output->print(data.getAirQualityState().c_str());
+    this->_output->println(")");
 }
 
 void RoomSensor::printCo2Equivalent(SensorData data)

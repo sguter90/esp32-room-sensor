@@ -129,6 +129,7 @@ void setupRoomSensor()
   sensor.begin(BME680_I2C_ADDR_SECONDARY, Wire);
   sensor.setTemperatureOffset(temperatureOffset);
   roomSensor = RoomSensor(sensor, logger);
+  roomSensor.setReadIntervall(sensorReadIntervall);
   roomSensor.printSensorStatus();
 
   bsec_virtual_sensor_t sensorList[10] = {

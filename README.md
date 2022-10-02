@@ -8,8 +8,8 @@ Uses the BME680 sensor to read temperature, pressure, humidity and IAQ and provi
 1. Connects to MQTT broker
 1. Reads the sensor data of the BME680
 1. Runs a webserver which provides two routes:
-1.1 http://<IP address>/ -> provides a way to view current sensor data
-1.1 http://<IP address>/log -> allows to watch everything printed even if the ESP32 isn't connected to Serial
+1.1. http://<IP address>/ -> provides a way to view current sensor data
+1.1. http://<IP address>/log -> allows to watch everything printed even if the ESP32 isn't connected to Serial
 1. Runs websockets to push everything logged to the "/log" webpage
 1. The "/log" webpage additonally sends a ping request via JavaScript websocket and the ESP32 responds with a pong message to identify connection issues on client side.
 

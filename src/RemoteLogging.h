@@ -4,6 +4,10 @@
 #include "WebServerAdvanced.h"
 #include <WebSocketsServer.h>
 
+#ifdef ESP8266
+typedef ESP8266WebServer WebServer;
+#endif
+
 class RemoteLogging : public Print
 {
 private:

@@ -1,11 +1,20 @@
 #ifndef WIFI_SETUP_H
 #define WIFI_SETUP_H
 
+#include <string>
+
+#ifdef ESP8266
+#include <ESP8266WiFi.h>
+typedef ESP8266WiFiClass WiFiClass;
+#else
 #include <WiFi.h>
+#endif
 
 void handleWifiEvent(WiFiEvent_t event)
 {
   Serial.printf("[WiFi-event] event: %d\n", event);
+  #ifdef ESP8266
+  #else 
   switch (event)
   {
   case SYSTEM_EVENT_WIFI_READY:
@@ -80,6 +89,7 @@ void handleWifiEvent(WiFiEvent_t event)
   default:
     break;
   }
+  #endif
 }
 
 void setupWiFi(WiFiClass &connection, std::string ssid, std::string password, Print &output)

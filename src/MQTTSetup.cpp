@@ -36,6 +36,8 @@ void MQTTSetup::connect()
         {
             this->_printer->println("Connected to MQTT broker");
             connectionFails = 0;
+            delay(500);
+            return;
         }
         else
         {

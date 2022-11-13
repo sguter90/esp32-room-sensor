@@ -1,6 +1,7 @@
 #ifndef REMOTE_ROOMSENSOR_H
 #define REMOTE_ROOMSENSOR_H
 
+#include <string>
 #include <stdint.h>
 #include "bsec.h"
 

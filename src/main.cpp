@@ -15,6 +15,9 @@ long lastWifiCheck;
 // webserver
 WebServerAdvanced server(80);
 WebSocketsServer webSocket(81);
+#ifdef ESP8266
+typedef ESP8266WebServer WebServer;
+#endif
 
 // MQTT
 WiFiClient espClient;

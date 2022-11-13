@@ -1,6 +1,7 @@
 #ifndef MQTT_SETUP_H
 #define MQTT_SETUP_H
 
+#include <string>
 #include <PubSubClient.h>
 
 class MQTTConfig

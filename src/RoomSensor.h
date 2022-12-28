@@ -4,6 +4,7 @@
 #include <string>
 #include <stdint.h>
 #include "bsec.h"
+#include <sys/time.h>
 
 class SensorData
 {
@@ -63,6 +64,10 @@ public:
     void printAccuracy(SensorData data);
     void printSensorData(SensorData data);
     void printSensorStatus();
+    void printSensorState(const uint8_t* state);
+
+    uint8_t sensorState[BSEC_MAX_STATE_BLOB_SIZE] = {0};
+    int64_t sensorStateTime = 0;
 };
 
 #endif

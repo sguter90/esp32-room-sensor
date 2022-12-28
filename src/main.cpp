@@ -29,6 +29,8 @@ MQTTConfig cfg;
 Bsec sensor;
 RoomSensor roomSensor;
 SensorData sensorData;
+RTC_DATA_ATTR uint8_t sensorState[BSEC_MAX_STATE_BLOB_SIZE] = {0};
+RTC_DATA_ATTR int64_t sensorStateTime = 0;
 
 // logging
 RemoteLogging logger = RemoteLogging(server, webSocket);
@@ -150,6 +152,11 @@ void setupRoomSensor()
       BSEC_OUTPUT_SENSOR_HEAT_COMPENSATED_HUMIDITY,
   };
 
+  if (sensorStateTime) {
+    logger.println("Setting sensor state from previous run");
+    sensor.setState(sensorState);
+    roomSensor.printSensorState(sensorState);
+  }
   sensor.updateSubscription(sensorList, 10, BSEC_SAMPLE_RATE_LP);
   roomSensor.printSensorStatus();
   roomSensor.onEvent(sensorDataEvent);
@@ -160,7 +167,9 @@ void setup()
   delay(1000);
   setupLogging();
   setupWiFi(WiFi, wifi_ssid, wifi_password, logger);
-  setupWebserver();
+  if (espMode == 1) {
+    setupWebserver();
+  }
   setupMqtt();
   setupRoomSensor();
 }
@@ -170,6 +179,21 @@ void loop()
   keepWiFiConnected(WiFi, wifiCheckInterval, lastWifiCheck, logger);
   mqtt.keepConnection();
   roomSensor.readData();
-  server.handleClient();
-  webSocket.loop();
+  std::copy(std::begin(roomSensor.sensorState), std::end(roomSensor.sensorState), std::begin(sensorState));
+  sensorStateTime = roomSensor.sensorStateTime;
+  if (espMode == 1) {
+    server.handleClient();
+    webSocket.loop();
+  }
+
+  if (espMode == 0) {
+    logger.println("Going to deep sleep...");
+
+    #ifdef ESP8266
+      ESP.deepSleep(sensorReadIntervall * 1000);
+    #else
+      esp_sleep_enable_timer_wakeup(sensorReadIntervall * 1000);
+      esp_deep_sleep_start();
+    #endif
+  }
 }

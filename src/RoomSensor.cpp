@@ -34,6 +34,9 @@ void RoomSensor::onEvent(SensorDataEvent cbEvent)
 
 void RoomSensor::readData()
 {
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    int64_t currentTime = (tv.tv_sec * 1000LL + (tv.tv_usec / 1000LL));
     // always run sensor but only process data in read intervall
     if (this->_sensor->run())
     {
@@ -41,6 +44,9 @@ void RoomSensor::readData()
         {
             return;
         }
+
+        this->sensorStateTime = currentTime;
+        this->_sensor->getState(this->sensorState);
 
         this->_nextReading = millis() + this->_readIntervall;
 
@@ -164,4 +170,15 @@ void RoomSensor::printSensorStatus()
             this->_output->println("BME680 warning code : " + String(this->_sensor->bme680Status));
         }
     }
+}
+
+void RoomSensor::printSensorState(const uint8_t* state) {
+  this->_output->println("Sensor state: ");
+  for (int i = 0; i < BSEC_MAX_STATE_BLOB_SIZE; i++) {
+    this->_output->printf("%02x ", state[i]);
+    if (i % 16 == 15) {
+      this->_output->println();
+    }
+  }
+  this->_output->println();
 }

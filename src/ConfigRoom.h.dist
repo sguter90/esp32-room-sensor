@@ -18,3 +18,5 @@ const char mqttTopicPrefix[60] = "LivingRoom/RoomSensor/";
 // BME680
 float temperatureOffset = 0;   // °C
 int sensorReadIntervall = 30000; // ms
+//const u_int8_t espMode = 1; // active
+const u_int8_t espMode = 0; // passive
